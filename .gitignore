@@ -1,2 +1,5 @@
-models/
+venv/
+__pycache__/
 data/
+models/
+.env

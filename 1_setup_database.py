@@ -9,7 +9,7 @@ cursor = conn.cursor()
 
 #Creating the schema
 cursor.execute('''CREATE TABLE IF NOT EXISTS debtors (
-    account_id INTEGER PRIMARY KEY,
+    account_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     balance REAL,
     status TEXT
