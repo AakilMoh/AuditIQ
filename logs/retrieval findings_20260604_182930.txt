@@ -1,0 +1,94 @@
+RETRIEVAL TEST RESULTS
+============================================================
+Generated: 2026-06-04 18:29:30.936538
+
+
+CASE: Legal Threat Violation
+--------------------------------------------------
+Account: Ali Khan
+Transcript:
+Listen Ali, pay today or I will sue you tomorrow.
+
+Result:
+{'compliance_passed': False, 'reasoning': "Agent threatened legal action on an account marked 'Active', violating FDCPA rules.", 'retrieved_rules': ['Agents must not imply legal action unless explicitly authorized in policy.', "Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", "Accounts marked 'Pending Legal Action' may be informed about legal review status but no immediate threats or coercion are allowed.", 'Agents are allowed to discuss account balances and payment options for all account statuses.'], 'retrieval_scores': [0.8865748643875122, 1.0561683177947998, 1.1016688346862793, 1.2837426662445068, 1.302145004272461], 'sql_facts': 'True Balance: $3200.0, status: Active.', 'account_name': 'Ali Khan', 'transcript': 'Listen Ali, pay today or I will sue you tomorrow.'}
+
+
+CASE: Settlement Contact Violation
+--------------------------------------------------
+Account: Sara Connor
+Transcript:
+I know you already settled, but can you make another payment?
+
+Result:
+{'compliance_passed': False, 'reasoning': "The account is marked 'Settlement negotiated', and the agent is attempting to collect further payment, which is not allowed according to the rule 'Accounts marked 'Settlement Negotiated' must not be contacted for further payments.'", 'retrieved_rules': ["Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", 'Agents are allowed to discuss account balances and payment options for all account statuses.', 'Agents are authorized to offer a 20% discount on balances over $1000.', 'Agents must not imply legal action unless explicitly authorized in policy.'], 'retrieval_scores': [0.8380205035209656, 0.9654976725578308, 1.0410144329071045, 1.0776584148406982, 1.239625334739685], 'sql_facts': 'True Balance: $450.5, status: Settlement negotiated.', 'account_name': 'Sara Connor', 'transcript': 'I know you already settled, but can you make another payment?'}
+
+
+CASE: Correct Settlement Call
+--------------------------------------------------
+Account: Sara Connor
+Transcript:
+Your settlement agreement remains active. Thank you.
+
+Result:
+{'compliance_passed': True, 'reasoning': 'No explicit conflict with rules found in the transcript.', 'retrieved_rules': ["Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", 'Agents must not imply legal action unless explicitly authorized in policy.', "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", 'Agents are allowed to discuss account balances and payment options for all account statuses.', "Accounts marked 'Pending Legal Action' may be informed about legal review status but no immediate threats or coercion are allowed."], 'retrieval_scores': [0.7397961616516113, 0.9393689632415771, 0.9959163665771484, 1.0327215194702148, 1.1846821308135986], 'sql_facts': 'True Balance: $450.5, status: Settlement negotiated.', 'account_name': 'Sara Connor', 'transcript': 'Your settlement agreement remains active. Thank you.'}
+
+
+CASE: Balance Discussion
+--------------------------------------------------
+Account: Ali Khan
+Transcript:
+Your outstanding balance is $3200. How would you like to proceed?
+
+Result:
+{'compliance_passed': True, 'reasoning': 'No rule is clearly broken.', 'retrieved_rules': ['Agents are authorized to offer a 20% discount on balances over $1000.', 'Agents are allowed to discuss account balances and payment options for all account statuses.', "Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", 'Agents must not imply legal action unless explicitly authorized in policy.', "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'."], 'retrieval_scores': [0.8340975046157837, 1.0099118947982788, 1.0267486572265625, 1.1707780361175537, 1.1971420049667358], 'sql_facts': 'True Balance: $3200.0, status: Active.', 'account_name': 'Ali Khan', 'transcript': 'Your outstanding balance is $3200. How would you like to proceed?'}
+
+
+CASE: Legal Action Mention
+--------------------------------------------------
+Account: Ali Khan
+Transcript:
+Legal action may be considered for unpaid accounts.
+
+Result:
+{'compliance_passed': False, 'reasoning': "Transcript implies legal action on an 'Active' account, violating FDCPA rule.", 'retrieved_rules': ["Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", 'Agents must not imply legal action unless explicitly authorized in policy.', 'Agents are allowed to discuss account balances and payment options for all account statuses.', "Accounts marked 'Pending Legal Action' may be informed about legal review status but no immediate threats or coercion are allowed."], 'retrieval_scores': [0.7482536435127258, 0.7787729501724243, 0.9111304879188538, 0.9419912695884705, 1.076069951057434], 'sql_facts': 'True Balance: $3200.0, status: Active.', 'account_name': 'Ali Khan', 'transcript': 'Legal action may be considered for unpaid accounts.'}
+
+
+CASE: Pending Legal Action Account
+--------------------------------------------------
+Account: Jane Smith
+Transcript:
+Your account is currently under legal review regarding the outstanding balance.
+
+Result:
+{'compliance_passed': True, 'reasoning': 'No explicit rule is clearly broken.', 'retrieved_rules': ["Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", 'Agents are allowed to discuss account balances and payment options for all account statuses.', "Accounts marked 'Pending Legal Action' may be informed about legal review status but no immediate threats or coercion are allowed.", 'Agents must not imply legal action unless explicitly authorized in policy.'], 'retrieval_scores': [0.7231423854827881, 0.7619938850402832, 0.8627473711967468, 0.900353193283081, 0.9740514755249023], 'sql_facts': 'True Balance: $8900.0, status: Pending Legal Action.', 'account_name': 'Jane Smith', 'transcript': 'Your account is currently under legal review regarding the outstanding balance.'}
+
+
+CASE: Aggressive Legal Threat
+--------------------------------------------------
+Account: Jane Smith
+Transcript:
+Pay today or we will immediately take you to court.
+
+Result:
+{'compliance_passed': False, 'reasoning': "Agent threatened legal action on an account not explicitly marked as authorized for such action in policy, and the account status is 'Pending Legal Action', not 'Active', but the rule about 'Active' accounts is not applicable here, however, the first rule about implying legal action unless explicitly authorized is applicable.", 'retrieved_rules': ['Agents must not imply legal action unless explicitly authorized in policy.', "Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", "Accounts marked 'Pending Legal Action' may be informed about legal review status but no immediate threats or coercion are allowed.", 'Agents are allowed to discuss account balances and payment options for all account statuses.'], 'retrieval_scores': [0.7854654788970947, 0.9825074672698975, 1.0082833766937256, 1.193424105644226, 1.2242326736450195], 'sql_facts': 'True Balance: $8900.0, status: Pending Legal Action.', 'account_name': 'Jane Smith', 'transcript': 'Pay today or we will immediately take you to court.'}
+
+
+CASE: Settlement Offer for Legal Account
+--------------------------------------------------
+Account: Jane Smith
+Transcript:
+We can offer a settlement on your $8900 balance.
+
+Result:
+{'compliance_passed': True, 'reasoning': 'No rule is clearly broken as the agent is discussing account balance and payment options, which is allowed for all account statuses.', 'retrieved_rules': ['Agents are authorized to offer a 20% discount on balances over $1000.', "Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", 'Agents are allowed to discuss account balances and payment options for all account statuses.', "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.", 'Agents must not imply legal action unless explicitly authorized in policy.'], 'retrieval_scores': [0.7814734578132629, 0.8808115720748901, 0.9068008661270142, 0.9656450748443604, 1.1237808465957642], 'sql_facts': 'True Balance: $8900.0, status: Pending Legal Action.', 'account_name': 'Jane Smith', 'transcript': 'We can offer a settlement on your $8900 balance.'}
+
+
+CASE: Balance Inquiry Legal Account
+--------------------------------------------------
+Account: Jane Smith
+Transcript:
+Your balance is currently $8900. Would you like to discuss payment options?
+
+Result:
+{'compliance_passed': True, 'reasoning': 'No rule is clearly broken as the agent is allowed to discuss account balances and payment options for all account statuses.', 'retrieved_rules': ['Agents are authorized to offer a 20% discount on balances over $1000.', 'Agents are allowed to discuss account balances and payment options for all account statuses.', "Accounts marked 'Settlement Negotiated' must not be contacted for further payments.", 'Agents must not imply legal action unless explicitly authorized in policy.', "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'."], 'retrieval_scores': [0.8294340372085571, 0.9173110127449036, 1.0278881788253784, 1.1217433214187622, 1.1886829137802124], 'sql_facts': 'True Balance: $8900.0, status: Pending Legal Action.', 'account_name': 'Jane Smith', 'transcript': 'Your balance is currently $8900. Would you like to discuss payment options?'}
+
