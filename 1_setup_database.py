@@ -114,28 +114,19 @@ rules = [
     }
 ]
 
-documents = []
-ids = []
-metadatas = []
-
-for r in rules:
-    documents.append(r["text"])
-    ids.append(r["id"])
-    
-    # everything else goes into metadata
-    metadata = {
-        "type": r["type"],
-        "severity": r["severity"],
-        "priority": r["priority"],
-        "category": r["category"],
-        "action": r["action"]
+def build_metadata(rule):
+    return{
+        "type": rule.get("type"),
+        "severity": rule.get("severity"),
+        "priority": rule.get("priority"),
+        "category": rule.get("category"),
+        "action": rule.get("action")
     }
-    metadatas.append(metadata)
 
 collection.add(
-    documents=documents,
-    ids=ids,
-    metadatas=metadatas
+    documents=[r["text"] for r in rules],
+    ids=[r["id"] for r in rules],
+    metadatas=[build_metadata(r) for r in rules]
 )
 
 print("\nSuccess! Both databases are built and saved in the /data folder.")

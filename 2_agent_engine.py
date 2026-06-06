@@ -45,6 +45,49 @@ collection = chroma_client.get_collection(
     embedding_function=nvidia_ef
 )
 
+# Intent Detection
+#def detect_intent(transcript):
+#    transcript = transcript.lower()
+
+#    legal_words = [
+#        "court",
+#        "sue",
+#        "lawsuit",
+#        "legal",
+#        "attorney",
+#        "judge"
+#    ]
+
+#    payment_words = [
+#        "balance",
+#        "payment",
+#        "discount",
+#        "settlement",
+#        "pay"
+#    ]
+
+#    if any(word in transcript for word in legal_words):
+#        return "legal_compliance"
+#    if any(word in transcript for word in payment_words):
+#        return "financial_offer"
+    
+#    return "general_information"
+
+def detect_categories(transcript):
+    transcript = transcript.lower()
+    categories = []
+
+    if any(word in transcript for word in ["court", "sue", "lawsuit", "legal"]):
+        categories.append("legal_compliance")
+    if any(word in transcript for word in ["payment", "balance", "discount", "settlement", "pay"]):
+        categories.append("financial_offer")
+    if "settled" in transcript:
+        categories.append("communication_restriction")
+    if not categories:
+        categories.append("general_information")
+
+    return categories
+
 # 3.Agentic pipeline
 def run_qa_audit(transcript, account_name, debug=False):
     print(f"\nEvaluating Transcript for: {account_name}")
@@ -56,14 +99,35 @@ def run_qa_audit(transcript, account_name, debug=False):
         return json.dumps({"error": "Account not found."})
     sql_facts = f"True Balance: ${row[0]}, status: {row[1]}."
 
+    #intent = detect_intent(transcript)
+
+    #if debug:
+    #    print("\n---Intent Detection Debug---")
+    #    print(intent)
+    #    print("------")
+
+    categories = detect_categories(transcript)
+
+    if debug:
+        print("\n---Category Detection Debug---")
+        print(categories)
+        print("------")
+
     # Step B: Query ChromaDB
     rag_results = collection.query(
         query_texts=[transcript],
-        n_results=5
+        n_results=5,
+        where = {
+            "$or": [
+                {"category": cat}
+                for cat in categories
+            ]
+        }
     ) or {"documents": [[]]} # Fallback in case of empty results
 
     docs = rag_results.get('documents', [[]])[0]
     distances = rag_results.get("distances", [[]])[0]
+
     if debug:
         print("\n---Retrieval Debug---")
         print(f"QUERY: {transcript}\n")
@@ -78,6 +142,7 @@ def run_qa_audit(transcript, account_name, debug=False):
         print("------")
 
     legal_rules = " | ".join(docs[:3]) if docs else ""
+
     if debug:
         print("\n---SQL DEBUG---")
         print("ACCOUNT:", account_name)
