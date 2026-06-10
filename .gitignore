@@ -1,6 +1,22 @@
+# Virtual Environment
 venv/
-__pycache__/
-data/
-models/
+env/
+
+# Environment Variables
 .env
+
+# Databases & Vector Stores
+databases/
+*.sqlite
+chroma_db/
+chroma.sqlite3
+
+# Audio Files & Logs
+*.mp3
+*.wav
 logs/
+*.log
+
+# Python Cache
+__pycache__/
+*.pyc
