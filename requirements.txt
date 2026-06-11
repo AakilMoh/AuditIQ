@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+python-multipart
+openai
+chromadb
+sentence-transformers
+python-dotenv

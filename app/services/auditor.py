@@ -4,8 +4,8 @@ import json
 import os
 import logging
 from datetime import datetime
-from core.config import SQLITE_DB_PATH, CHROMA_DB_PATH, nvidia_ef, llm_client
-from services.hybrid_retriever import LegalRetriever
+from app.core.config import SQLITE_DB_PATH, CHROMA_DB_PATH, nvidia_ef, llm_client, PRIMARY_AUDITOR_MODEL, VERIFIER_MODEL
+from app.services.hybrid_retriever import LegalRetriever
 
 #-----------------------------------------------------------------------------------------------------------------
 #Ensuring the logs directory exists
@@ -26,33 +26,37 @@ if not logger.handlers:
 #-----------------------------------------------------------------------------------------------------------------
 
 #Connecting to the Local Databases
-sql_conn = sqlite3.connect(SQLITE_DB_PATH)
+sql_conn = sqlite3.connect(SQLITE_DB_PATH, check_same_thread=False)
 cursor = sql_conn.cursor()
 
 # Initializing new Advanced Hybrid Search
 retriever = LegalRetriever()
 
 #Agentic pipeline
-def run_qa_audit(transcript, account_name, debug=False):
+def run_qa_audit(transcript, account_name, think_mode=False, debug=False):
     logger.info(f"\nEvaluating Transcript for: {account_name}")
+    yield {"type": "status", "step": "init", "message": f"Evaluating Transcript for: {account_name}"}
 
     # Step A: Query SQL
     cursor.execute("SELECT balance, status FROM debtors WHERE name=?", (account_name,))
     row = cursor.fetchone()
     if row is None:
         logger.error(f"Account {account_name} not found in SQL database.")
-        return {"error": "Account not found."}
+        yield {"type": "error", "message": "Account not found."}
+        return
 
     sql_facts = f"True Balance: ${row[0]}, status: {row[1]}."
 
-    if debug:
-        logger.debug("---SQL DEBUG---")
-        logger.debug(f"ACCOUNT: {account_name}")
-        logger.debug(f"FACTS: {sql_facts}")
-        logger.debug("--------------")
+    #if debug:
+    #    logger.debug("---SQL DEBUG---")
+    #    logger.debug(f"ACCOUNT: {account_name}")
+    #    logger.debug(f"FACTS: {sql_facts}")
+    #    logger.debug("--------------")
 
     # Step B: Query Hybrid Retriever (Dense + Sparse + Reranker)
     logger.info("Fetching relevant federal law via Hybrid Retriever")
+    yield {"type": "status", "step": "database", "message": "Fetching relevant federal law via Hybrid Retriever"}
+
     retrieved_context = retriever.retrieve_context(transcript, top_k=3)
 
     # Format context cleanly for the LLM
@@ -64,13 +68,17 @@ def run_qa_audit(transcript, account_name, debug=False):
         context_string += f"Architect Explanation: {rule['explanation']}\n"
         context_string += f"Raw Federal Law Text:\n{rule['raw_federal_text']}\n\n"
 
-    if debug:
-        logger.debug("---Retrieval Debug---")
-        logger.debug(context_string)
-        logger.debug("--------------")
+    #if debug:
+    #    logger.debug("---Retrieval Debug---")
+    #    logger.debug(context_string)
+    #    logger.debug("--------------")
 
     # Step C: Agent 1 (The Primary Auditor - Llama 70B)
-    logger.info("Agent 1 (Llama-70B) is analyzing the transcript")
+    logger.info("Agent 1 is analyzing the transcript")
+
+    # Adjust schema instruction based on think mode
+    schema_desc = "Detailed CoT reasoning explaining the step-by-step logic." if think_mode else "Direct, concise explanation citing specific FDCPA rules."
+
     audit_prompt = f"""You are an elite QA Compliance Auditor for a massive debt collection agency.
     
     YOUR MISSION:
@@ -106,33 +114,65 @@ def run_qa_audit(transcript, account_name, debug=False):
         "reasoning": "Detailed explanation citing the specific FDCPA rules and SQL facts used to make this decision."
     }}
     """
-    
+    mode_text = "Llama 70B CoT (Think Mode ON 🧠)" if think_mode else "Llama 8B Standard (Flash Mode ON ⚡)"
+    yield {"type": "status", "step": "auditing", "message": f"Routing to {mode_text}. Generating stream"}
+
     try:
         # The request to NVIDIA
         response_1 = llm_client.chat.completions.create(
-            model="meta/llama-3.1-70b-instruct",
+            model=PRIMARY_AUDITOR_MODEL if think_mode else VERIFIER_MODEL,
             messages=[
                 {"role": "system", "content": "You output strictly valid JSON without markdown blocks."},
                 {"role": "user", "content": audit_prompt}
             ],
-            temperature=0.0,
-            max_tokens=1024
+            temperature=0.1,
+            max_tokens=1024,
+            stream=True
         )
         
-        audit_result = json.loads(response_1.choices[0].message.content)
+        full_response = ""
+
+        #Yielding tokens live as they arrive
+        for chunk in response_1:
+            if chunk.choices[0].delta.content:
+                text_chunk = chunk.choices[0].delta.content
+                full_response += text_chunk
+                yield {"type": "token", "content": text_chunk}
+
+        #parsing the completed stream
+        try:
+            audit_result = json.loads(full_response)
+        except json.JSONDecodeError:
+            #Fallback if the LLM wraps it in markdown despite our prompt
+            start_idx = full_response.find('{')
+            end_idx = full_response.rfind('}') + 1
+            if start_idx != -1 and end_idx != 0:
+                audit_result = json.loads(full_response[start_idx:end_idx])
+            else:
+                raise ValueError("Could not parse JSON from LLM output.")
 
         # Step D: Agent 2 (The Verifier - Llama 8B)
-        logger.info("Agent 2 (Llama-8B) is checking Agent 1 for hallucinations")
+        logger.info("Agent 2 is checking Agent 1 for hallucinations")
+        yield {"type": "status", "step": "verifying", "message": f"Agent 2 ({VERIFIER_MODEL}) is looking for hallucinations"}
 
-        verify_prompt = f"""You are a strict Legal Verifier. 
-        An AI Auditor just reviewed a transcript and provided this reasoning:
-        "{audit_result.get('reasoning', '')}"
+        verify_prompt = f"""You are a strict QA Audit Verifier. 
+        An AI Auditor just reviewed a transcript. I will provide you the Federal Law, and Agent 1's reasoning.
         
         Here is the actual Federal Law that was retrieved:
         {context_string}
+
+        AI Auditor's REASONING:
+        "{audit_result.get('reasoning', '')}"
         
-        Does the AI Auditor's reasoning directly contradict the provided Federal Law? 
+        YOUR JOB:
+        Does the AI Auditor's reasoning reasoning contain a BLATANT CONTRADICTION of the Federal Law? 
+        - DO NOT penalize Agent 1 for summarizing or omitting minor details of future actions (like what goes inside a written letter).
+        - ONLY flag a contradiction if Agent 1 approved a behavior that the law explicitly forbids, or penalized a behavior the law explicitly allows
+        
+        If there is a blatant contradiction, output: YES
+        If the logic is generally sound, output: NO
         If the auditor hallucinated a rule or made up a citation, flag it.
+
         Respond ONLY with a raw JSON object:
         {{
             "contradiction_found": boolean,
@@ -141,13 +181,13 @@ def run_qa_audit(transcript, account_name, debug=False):
         """
 
         response_2 = llm_client.chat.completions.create(
-            model="meta/llama-3.1-8b-instruct",
+            model=VERIFIER_MODEL,
             messages=[
                 {"role": "system", "content": "You output strictly valid JSON without markdown blocks."},
                 {"role": "user", "content": verify_prompt}
             ],
-            temperature=0.0,
-            max_tokens=800
+            temperature=0.1,
+            max_tokens=250
         )
         
         verify_result = json.loads(response_2.choices[0].message.content)
@@ -161,18 +201,18 @@ def run_qa_audit(transcript, account_name, debug=False):
 
         logger.info(f"Audit Complete. Final Score: {audit_result.get('performance_score')}")
         
-        return {
+        final_payload = {
             **audit_result,
             "verification_notes": verify_result.get("verification_notes"),
             "retrieved_rules": [rule['rule_id'] for rule in retrieved_context],
             "sql_facts": sql_facts,
             "account_name": account_name,
             "transcript": transcript,
-            "llm_prompt_used": audit_prompt
         }
+
+        yield {"type": "complete", "result": final_payload}
 
     except Exception as e:
         logger.error(f"LLM Processing Error: {str(e)}")
-        return {"error": str(e), "compliance_passed": False}
-
+        yield {"type": "error", "message": f"Pipeline Error: {str(e)}"}
 

@@ -5,7 +5,7 @@ import hashlib
 import secrets
 import logging
 from datetime import datetime
-from core.config import SQLITE_DB_PATH, CHROMA_DB_PATH, nvidia_ef
+from app.core.config import SQLITE_DB_PATH, CHROMA_DB_PATH, nvidia_ef
 
 os.makedirs("logs", exist_ok=True)
 logger = logging.getLogger("ingestion")

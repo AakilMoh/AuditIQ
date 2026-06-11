@@ -2,9 +2,9 @@ import sqlite3
 import os
 import logging
 from datetime import datetime
-from core.config import SQLITE_DB_PATH
-from services.transcriber import transcribe_call
-from services.auditor import run_qa_audit
+from app.core.config import SQLITE_DB_PATH
+from app.services.transcriber import transcribe_call
+from app.services.auditor import run_qa_audit
 
 #Dual Output Logging
 os.makedirs("logs", exist_ok=True)

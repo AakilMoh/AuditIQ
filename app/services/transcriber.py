@@ -1,7 +1,7 @@
 import os
 import logging
 from datetime import datetime
-from core.config import audio_client
+from app.core.config import audio_client
 
 os.makedirs("logs", exist_ok=True)
 logger = logging.getLogger("transcriber")

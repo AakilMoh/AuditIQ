@@ -3,7 +3,7 @@ from typing import List, Dict
 import chromadb
 from rank_bm25 import BM25Okapi
 from sentence_transformers import CrossEncoder
-from core.config import CHROMA_DB_PATH, nvidia_ef
+from app.core.config import CHROMA_DB_PATH, nvidia_ef
 
 logger = logging.getLogger("hybrid_retriever")
 logger.setLevel(logging.INFO)

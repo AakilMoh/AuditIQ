@@ -7,9 +7,16 @@ from chromadb import Documents, EmbeddingFunction, Embeddings
 #Loading enviroment variables globally
 load_dotenv()
 
+# (Goes up from config.py -> core -> app -> mini_collectiq)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 #Centralizing Database Paths
-SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "databases/collectiq.sqlite")
-CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "databases/chromadb")
+SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", os.path.join(BASE_DIR, "databases", "collectiq.sqlite"))
+CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", os.path.join(BASE_DIR, "databases", "chromadb"))
+
+# Centralized Model Definitions
+PRIMARY_AUDITOR_MODEL = os.getenv("PRIMARY_AUDITOR_MODEL", "meta/llama-3.1-70b-instruct")
+VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "google/gemma-4-31b-it")
 
 #Ensuring required directories exist before the app boots
 os.makedirs("databases", exist_ok=True)

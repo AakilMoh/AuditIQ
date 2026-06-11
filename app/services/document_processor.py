@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 import chromadb
 from langchain_community.document_loaders import PyPDFLoader
-from core.config import CHROMA_DB_PATH, nvidia_ef
+from app.core.config import CHROMA_DB_PATH, nvidia_ef
 
 os.makedirs("logs", exist_ok=True)
 logger = logging.getLogger("doc_processor")
