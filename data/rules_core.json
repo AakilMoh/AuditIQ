@@ -1,0 +1,65 @@
+[
+  {
+    "id": "RULE_TIME_OF_CALL",
+    "type": "compliance_rule",
+    "rule": "A debt collector shall assume that the convenient time for communicating with a consumer is after 8 o'clock antemeridian and before 9 o'clock postmeridian, local time.",
+    "severity": "high",
+    "mapped_sections": ["FDCPA_805"],
+    "sub_section_citation": "§ 805(a)(1)",
+    "explanation": "Prohibits contacting debtors at unusual or inconvenient times, establishing standard call hours between 8:00 AM and 9:00 PM local time."
+  },
+  {
+    "id": "RULE_ATTORNEY_REPRESENTATION",
+    "type": "compliance_rule",
+    "rule": "A debt collector may not communicate with a consumer if the debt collector knows the consumer is represented by an attorney with respect to such debt.",
+    "severity": "critical",
+    "mapped_sections": ["FDCPA_805"],
+    "sub_section_citation": "§ 805(a)(2)",
+    "explanation": "Forces immediate cessation of direct communication if consumer legal representation is established and details are known."
+  },
+  {
+    "id": "RULE_HARASSMENT_REPEATED_CALLS",
+    "type": "compliance_rule",
+    "rule": "Collectors must not cause a telephone to ring or engage any person in telephone conversation repeatedly or continuously with intent to annoy, abuse, or harass.",
+    "severity": "high",
+    "mapped_sections": ["FDCPA_806"],
+    "sub_section_citation": "§ 806(5)",
+    "explanation": "Prevents call frequency abuse designed to coerce payments via systemic telephone harassment."
+  },
+  {
+    "id": "RULE_THREAT_OF_ARREST",
+    "type": "compliance_rule",
+    "rule": "Collectors cannot make the representation or implication that nonpayment of any debt will result in the arrest or imprisonment of any person.",
+    "severity": "critical",
+    "mapped_sections": ["FDCPA_807"],
+    "sub_section_citation": "§ 807(4)",
+    "explanation": "Severe violation blocking collectors from using false threats of criminal incarceration or unpermitted asset seizures."
+  },
+  {
+    "id": "RULE_FALSE_LEGAL_STATUS",
+    "type": "compliance_rule",
+    "rule": "A debt collector may not use the false representation of the character, amount, or legal status of any debt.",
+    "severity": "critical",
+    "mapped_sections": ["FDCPA_807"],
+    "sub_section_citation": "§ 807(2)(A)",
+    "explanation": "Prevents misrepresenting outstanding balances, hidden fees, or false claims regarding active lawsuits."
+  },
+  {
+    "id": "RULE_UNAUTHORIZED_FEES",
+    "type": "compliance_rule",
+    "rule": "A debt collector cannot collect any amount (including any interest, fee, charge, or expense) unless such amount is expressly authorized by the agreement creating the debt or permitted by law.",
+    "severity": "high",
+    "mapped_sections": ["FDCPA_808"],
+    "sub_section_citation": "§ 808(1)",
+    "explanation": "Outlaws charging arbitrary convenience fees, administrative penalties, or unauthorized compounding interest."
+  },
+  {
+    "id": "RULE_VALIDATION_NOTICE",
+    "type": "compliance_rule",
+    "rule": "Within five days after the initial communication with a consumer, a debt collector shall send the consumer a written notice containing the amount of the debt and the name of the creditor.",
+    "severity": "medium",
+    "mapped_sections": ["FDCPA_809"],
+    "sub_section_citation": "§ 809(a)",
+    "explanation": "Mandates proper execution of consumer disclosure rights regarding verification thresholds and debt validation windows."
+  }
+]

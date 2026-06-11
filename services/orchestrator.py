@@ -86,6 +86,7 @@ def process_call(audio_path: str, debtor_id: int, agent_id: int, auditor_id: int
             f"Compliance    : {'PASSED' if passed else 'FAILED'}\n"
             f"Transcript    : '{transcript}'\n"
             f"AI Reasoning  : {reasoning}\n"
+            f"Verifier Notes : {audit_result.get('verification_notes', 'N/A')}\n"
             f"{'='*60}"
         )
         logger.info(success_msg)
@@ -99,7 +100,7 @@ def process_call(audio_path: str, debtor_id: int, agent_id: int, auditor_id: int
 
 #Execution
 if __name__ == "__main__":
-    test_audio = "test_call.mp3"
+    test_audio = "compliant_call.mp3"
     
     if os.path.exists(test_audio):
         process_call(
