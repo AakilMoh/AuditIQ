@@ -39,7 +39,7 @@ class LegalRetriever:
         self.bm25 = BM25Okapi(tokenized_corpus)
         logger.info("Hybrid Retriever Ready.")
     
-    def retrieve_context(self, transcript_snippet: str, top_k: int = 3) -> List[Dict]:
+    def retrieve_context(self, transcript_snippet: str, top_k: int = 5) -> List[Dict]:
         """
         Executes Dense + Sparse retrieval, reranks results, and fetches parent text.
         """
@@ -48,7 +48,7 @@ class LegalRetriever:
         # --- DENSE SEARCH ---
         dense_results = self.collection_b.query(
             query_texts=[transcript_snippet],
-            n_results=5
+            n_results=15
         )
         dense_docs = dense_results.get('documents', [[]])[0]
         dense_ids = dense_results.get('ids', [[]])[0]
@@ -57,7 +57,7 @@ class LegalRetriever:
         tokenized_query = transcript_snippet.lower().split(" ")
         bm25_scores = self.bm25.get_scores(tokenized_query)
         
-        top_bm25_indices = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:5]
+        top_bm25_indices = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:15]
         sparse_docs = [self.corpus_docs[i] for i in top_bm25_indices]
         sparse_ids = [self.corpus_ids[i] for i in top_bm25_indices]
 

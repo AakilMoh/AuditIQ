@@ -57,7 +57,7 @@ def run_qa_audit(transcript, account_name, think_mode=False, debug=False):
     logger.info("Fetching relevant federal law via Hybrid Retriever")
     yield {"type": "status", "step": "database", "message": "Fetching relevant federal law via Hybrid Retriever"}
 
-    retrieved_context = retriever.retrieve_context(transcript, top_k=3)
+    retrieved_context = retriever.retrieve_context(transcript, top_k=5)
 
     # Format context cleanly for the LLM
     context_string = ""

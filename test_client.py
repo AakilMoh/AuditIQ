@@ -1,20 +1,22 @@
 import requests
 import json
 import sys
+import os
 
 # The endpoint we just built
 url = "http://localhost:8000/api/v1/audit/stream"
 
 # We will use your existing test file
-audio_path = "compliant_call.mp3" 
+audio_path = "eval_audio/case_5_david_rose.mp3" 
 
 print("Initiating Stream Test\n")
 
 with open(audio_path, "rb") as audio_file:
     # 1. Prepare the payload exactly as the frontend will send it
+    safe_filename = os.path.basename(audio_path)
     files = {"audio_file": (audio_path, audio_file, "audio/mpeg")}
     data = {
-        "debtor_id": 3,          # Jane Smith
+        "debtor_id": 8,          
         "think_mode": "True"     # Turning on the heavy Llama 70B
     }
 
@@ -80,6 +82,20 @@ with open(audio_path, "rb") as audio_file:
                             else:
                                 print(f"  {value}")
                         print("\n" + "="*70 + "\n")
+
+                        #automatically saving the final result for evaluations
+                        log_dir = "eval_logs"
+                        os.makedirs(log_dir, exist_ok=True)
+
+                        # Create a safe filename using the audio filename 
+                        # e.g., "case_1_john_doe_result.json"
+                        safe_name = os.path.splitext(os.path.basename(audio_path))[0]
+                        log_path = os.path.join(log_dir, f"{safe_name}_result.json")
+                        
+                        with open(log_path, "w", encoding="utf-8") as f:
+                            json.dump(result, f, indent=4)
+                            
+                        print(f"💾 [SAVED] Log successfully written to: {log_path}\n")
                         
                     elif step == "error":
                         print(f"\n[ERROR]: {event_data['message']}")

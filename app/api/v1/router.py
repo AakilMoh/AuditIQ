@@ -23,8 +23,16 @@ async def stream_audit(
         yield f"data: {json.dumps({'step': 'init', 'message': f'Received {audio_file.filename}. Validating payload'})}\n\n"
         await asyncio.sleep(0.2) # Tiny delay for UI smoothness
 
-        temp_path = f"temp_uploads/{audio_file.filename}"
-        os.makedirs("temp_uploads", exist_ok=True)
+        #stripping out any incoming folder paths from the client for security and path safety
+        safe_filename = os.path.basename(audio_file.filename)
+
+        #ensure the base upload directory exists
+        temp_dir = "temp_uploads"
+        os.makedirs(temp_dir, exist_ok=True)
+
+        #combining them
+        temp_path = os.path.join(temp_dir, safe_filename)
+        
         with open(temp_path, "wb") as buffer:
             shutil.copyfileobj(audio_file.file, buffer)
 

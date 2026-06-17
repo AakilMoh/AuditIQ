@@ -3,6 +3,8 @@ import json
 import logging
 import re
 from datetime import datetime
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity 
 import chromadb
 from langchain_community.document_loaders import PyPDFLoader
 from app.core.config import CHROMA_DB_PATH, nvidia_ef
@@ -21,6 +23,84 @@ if not logger.handlers:
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
 # ---------------------------------------------------------
+#Deduplication and clustering logic
+SEVERITY_RANK = {"critical":0, "high":1, "medium":2, "low":3}
+
+def get_legal_embedding(rule):
+    """Embeds ONLY the legal core to find semantic overlaps."""
+    text = f"{rule.get('explanation', '')} {rule.get('rule', '')} {' '.join(rule.get('violation_patterns', []))}"
+    # Using nvidia_ef to get the embedding vector directly
+    return nvidia_ef([text])[0]
+
+def cluster_and_prioritize_rules(rules):
+    logger.info("Initializing Offline Semantic Deduplication Matrix")
+
+    # 1. Generate Embeddings
+    embeddings = [get_legal_embedding(r) for r in rules]
+    sim_matrix = cosine_similarity(embeddings)
+    
+    # 2. Cluster over 0.88 Threshold
+    THRESHOLD = 0.88
+    cluster_counter = 0
+
+    for i in range(len(rules)):
+        for j in range(i + 1, len(rules)):
+            if sim_matrix[i][j] > THRESHOLD:
+                ci = rules[i].get('cluster_id')
+                cj = rules[j].get('cluster_id')
+
+                if ci and cj and ci != cj:
+                    # Merge logic (simplify by pushing to lower ID)
+                    for r in rules:
+                        if r.get('cluster_id') == cj:
+                            r['cluster_id'] = ci
+                elif ci:
+                    rules[j]['cluster_id'] = ci
+                elif cj:
+                    rules[i]['cluster_id'] = cj
+                else:
+                    cid = f"cluster_{cluster_counter:03d}"
+                    cluster_counter += 1
+                    rules[i]['cluster_id'] = cid
+                    rules[j]['cluster_id'] = cid
+
+    # 3. Assign Priority Within Clusters
+    cluster_groups = {}
+    for rule in rules:
+        cid = rule.get('cluster_id')
+        if cid:
+            if cid not in cluster_groups:
+                cluster_groups[cid] = []
+            cluster_groups[cid].append(rule)
+        else:
+            # Standalone rule
+            rule['priority'] = 1
+            rule['superseded_by'] = ""
+
+    for cid, cluster_rules in cluster_groups.items():
+        # Sort by: Specificity (anchors count), then Severity, then Section Num
+        def sort_key(r):
+            specificity = -len(r.get('scenario_anchors', []))
+            sev = SEVERITY_RANK.get(r.get('severity', 'medium'), 2)
+            try:
+                section_num = int(re.sub(r'\D', '', r.get('mapped_sections', ['0'])[0]))
+            except ValueError:
+                section_num = 999
+            return (specificity, sev, section_num)
+
+        sorted_rules = sorted(cluster_rules, key=sort_key)
+        
+        for i, r in enumerate(sorted_rules):
+            r['priority'] = i + 1
+            if i > 0:
+                r['superseded_by'] = sorted_rules[0]['id']
+            else:
+                r['superseded_by'] = ""
+                
+    logger.info(f"Clustered {len(rules)} rules into {cluster_counter} semantic groups.")
+    return rules
+
+#Main Ingestion
 
 def ingest_dual_index_architecture():
     pdf_path = "data/fdcpa_rules.pdf"
@@ -105,27 +185,38 @@ def ingest_dual_index_architecture():
     logger.info("Loading Curated rules_core JSON file")
     with open(json_path, "r", encoding="utf-8") as file:
         rules_data = json.load(file)
+
+    # Apply Offline Clustering
+    rules_data = cluster_and_prioritize_rules(rules_data)
     
-    rule_texts = [rule["rule"] for rule in rules_data]
+    rule_texts = [rule["explanation"] for rule in rules_data]
     rule_ids = [rule["id"] for rule in rules_data]
+    rule_metadatas = []
 
-    # We convert the list of mapped sections into a comma-separated string 
-    # because ChromaDB metadata doesn't accept Python lists.
+    for rule in rules_data:
+        flat_key_terms = " ".join([f"{pair[0]} {pair[1]}" for pair in rule.get("key_terms", [])]) #flattening as ChromaDB metadata does not accept Python arrays
 
-    rule_metadatas = [
-        {
-            "severity": rule["severity"],
-            "type": rule["type"],
-            "mapped_sections": ",".join(rule["mapped_sections"]),
+        rule_metadatas.append({
+            "severity": rule.get("severity", "medium"),
+            "type": rule.get("type", "compliance_rule"),
+            "mapped_sections": ",".join(rule.get("mapped_sections", [])),
             "sub_section_citation": rule.get("sub_section_citation", ""),
-            "explanation": rule.get("explanation", "") 
-        } 
-        for rule in rules_data
-    ]
+            "cluster_id": rule.get("cluster_id", ""),
+            "priority": rule.get("priority", 1),
+            "superseded_by": rule.get("superseded_by", ""),
+            
+            #FLATTENED ARRAYS FOR CHROMADB
+            "scenario_anchors_text": " || ".join(rule.get("scenario_anchors", [])),
+            "bm25_key_terms": flat_key_terms,
+            "negative_anchors_text": " || ".join(rule.get("negative_anchors", [])),
+            "violation_patterns_text": " || ".join(rule.get("violation_patterns", [])),
+            
+            #THE EXACT LAW
+            "formal_rule": rule.get("rule", "")
+        })
 
     collection_b.add(documents=rule_texts, metadatas=rule_metadatas, ids=rule_ids)
-    logger.info(f"Collection B Built: {len(rules_data)} optimized compliance rules done.")
-
+    logger.info(f"Collection B Built: {len(rules_data)} optimized compliance rules clustered and ingested.")
     logger.info(f"\n{'='*50}\nDUAL-INDEX INGESTION COMPLETE\n{'='*50}")
 
 if __name__ == "__main__":

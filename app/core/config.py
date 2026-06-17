@@ -16,7 +16,7 @@ CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", os.path.join(BASE_DIR, "databases",
 
 # Centralized Model Definitions
 PRIMARY_AUDITOR_MODEL = os.getenv("PRIMARY_AUDITOR_MODEL", "meta/llama-3.1-70b-instruct")
-VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "google/gemma-4-31b-it")
+VERIFIER_MODEL = os.getenv("VERIFIER_MODEL", "deepseek-ai/deepseek-v4-pro")
 
 #Ensuring required directories exist before the app boots
 os.makedirs("databases", exist_ok=True)

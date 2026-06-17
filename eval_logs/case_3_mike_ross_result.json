@@ -1,0 +1,17 @@
+{
+    "compliance_passed": false,
+    "performance_score": 1,
+    "violations_found": [
+        "RULE_FALSE_LEGAL_STATUS"
+    ],
+    "reasoning": "The agent misrepresented the legal status of the debt by stating that local law enforcement would be sent to the consumer's registered address for theft of services, which is not a lawful action for a debt collector to take. This is a clear violation of \u00a7 807(2)(A), which prohibits the false representation of the character, amount, or legal status of any debt. Additionally, the agent threatened to garnish the consumer's wages and have law enforcement visit their home, which is not a legitimate consequence for non-payment of a $450 debt. The agent also failed to provide the Mini-Miranda disclosure, which is required by \u00a7 807. However, this is not a clear rule violation. The balance stated by the agent matches the SQL FACTS, which is $450. No specific rule like Harassment \u00a7 806 or Attorney Rep \u00a7 805 was violated. The call did not meet the requirements of \u00a7 809(a) and \u00a7 807, as the agent made false representations and threats.",
+    "verification_notes": "The AI Auditor correctly identifies that threatening law enforcement action and wage garnishment for a $450 debt misrepresents the legal status of the debt under \u00a7 807(2)(A). The reasoning aligns with the rule's prohibition against false representations of legal status. The mention of Mini-Miranda is noted as not a clear rule violation, which is accurate. No hallucinated rules or citations were found.",
+    "retrieved_rules": [
+        "RULE_FALSE_LEGAL_STATUS",
+        "RULE_ATTORNEY_REPRESENTATION",
+        "RULE_TIME_OF_CALL"
+    ],
+    "sql_facts": "True Balance: $450.0, status: Active.",
+    "account_name": "Mike Ross",
+    "transcript": " Is Mike Ross there? Speaking. Listen, Mike, this is Robert from the recovery department. I'm looking at your file here and you owe us $450. You've been dodging our calls for weeks and, frankly, my manager is done playing games. Look, I've been meaning to call you guys back. I just... I don't want to hear the excuses, Mike. Here is what is going to happen. If you don't give me a credit card number to clear this $450 by 5 p.m. today, I am authorizing the legal team to contact your employer to garnish your wages. We will also be sending local law enforcement to your registered address for theft of services. Wait, the police? For $450? You can't do that. Try me. I have the paperwork sitting on my desk right now. Are you paying this today or am I making the call? I... I'll have to borrow it from my brother. Let me call you back."
+}
