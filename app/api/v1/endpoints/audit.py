@@ -2,7 +2,9 @@ import os
 import json
 import shutil
 import asyncio
-from fastapi import APIRouter, UploadFile, File, Form, Depends
+import time
+from datetime import datetime, timezone
+from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from app.database.connection import get_db_connection
 from app.core.schemas import SaveAuditRequest, SaveAuditResponse
@@ -26,18 +28,16 @@ async def stream_audit(
         yield f"data: {json.dumps({'step': 'init', 'message': f'Received {audio_file.filename}. Validating payload'})}\n\n"
         await asyncio.sleep(0.2) # Tiny delay for UI smoothness
 
-        #stripping out any incoming folder paths from the client for security and path safety
-        safe_filename = os.path.basename(audio_file.filename)
-
-        #ensure the base upload directory exists
-        temp_dir = "temp_uploads"
-        os.makedirs(temp_dir, exist_ok=True)
-
-        #combining them
-        temp_path = os.path.join(temp_dir, safe_filename)
+        #Local Audio Vault <- till deployment
+        #appending a timestamp to the filename to prevent overwrites and to save it permanently.
+        safe_filename = f"{int(time.time())}_{os.path.basename(audio_file.filename)}"
+        vault_dir = "local_audio_vault"  #Swap to cloud URI when deploying
+        os.makedirs(vault_dir, exist_ok=True)
+        saved_audio_path = os.path.join(vault_dir, safe_filename)
         
-        with open(temp_path, "wb") as buffer:
+        with open(saved_audio_path, "wb") as buffer:
             shutil.copyfileobj(audio_file.file, buffer)
+
 
         # Step 2: Database Cross-Reference
         yield f"data: {json.dumps({'step': 'database', 'message': 'Fetching debtor profile from SQLite vault'})}\n\n"
@@ -45,8 +45,8 @@ async def stream_audit(
         cursor.execute("SELECT name FROM debtors WHERE debtor_id = ?", (debtor_id,))
         row = cursor.fetchone()
         if not row:
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
+            if os.path.exists(saved_audio_path):
+                os.remove(saved_audio_path)
             yield f"data: {json.dumps({'step': 'error', 'message': 'Debtor ID not found.'})}\n\n"
             return
         account_name = row[0]
@@ -54,15 +54,18 @@ async def stream_audit(
 
         # Step 3: Audio Transcription
         yield f"data: {json.dumps({'step': 'transcribing', 'message': 'Passing audio to Whisper API'})}\n\n"
-        transcript = transcribe_call(temp_path)
+        transcript = transcribe_call(saved_audio_path)
         if "Error" in transcript:
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
+            if os.path.exists(saved_audio_path):
+                os.remove(saved_audio_path)
             yield f"data: {json.dumps({'step': 'error', 'message': 'Transcription failed.'})}\n\n"
             return
         
         # Send the transcript to the frontend immediately so the user can read it while the AI thinks!
         yield f"data: {json.dumps({'step': 'transcript_ready', 'transcript': transcript})}\n\n"
+
+        #constructing a trackable text of  what the LLM was fed
+        prompt_signature = f"SYSTEM_ROLE: FDCPA Compliance Auditor | TARGET_ACCOUNT: {account_name} | TRANSCRIPT_LENGTH: {len(transcript)} chars"
 
         # Step 4: Multi-Agent AI Audit
         #Will be looping through the generator built in auditor.py
@@ -76,15 +79,13 @@ async def stream_audit(
                 yield f"data: {json.dumps({'step': 'stream', 'chunk': event['content']})}\n\n"
             
             elif event["type"] == "complete":
-                # Final cleanup and return
-                if os.path.exists(temp_path):
-                    os.remove(temp_path)
-                yield f"data: {json.dumps({'step': 'complete', 'result': event['result']})}\n\n"
+                final_result = event['result']
+                final_result["cloud_audio_uri"] = saved_audio_path
+                final_result["llm_prompt"] = prompt_signature
+
+                yield f"data: {json.dumps({'step': 'complete', 'result': final_result})}\n\n"
                 
             elif event["type"] == "error":
-                # Handle any deep pipeline errors gracefully
-                if os.path.exists(temp_path):
-                    os.remove(temp_path)
                 yield f"data: {json.dumps({'step': 'error', 'message': event['message']})}\n\n"
 
     # Return the stream with the correct SSE media type
@@ -97,19 +98,52 @@ async def save_audit_result(
     db = Depends(get_db_connection),
 ):
     """Persists a completed audit result to call_logs."""
-    cursor = db.cursor()
-    cursor.execute("""
-        INSERT INTO call_logs (
-            debtor_id, agent_id, transcript, compliance_passed, 
-            ai_performance_score, reasoning, timestamp
-        ) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
-    """, (
-        payload.debtor_id, 
-        payload.agent_id, 
-        payload.result.transcript, 
-        payload.result.compliance_passed, 
-        payload.result.performance_score, 
-        payload.result.reasoning
-    ))
-    db.commit()
-    return SaveAuditResponse(log_id=cursor.lastrowid, message="Audit saved successfully.")
+    try:
+        cursor = db.cursor()
+        if hasattr(payload.result, "model_dump"):
+            res = payload.result.model_dump() #for pydantic v2
+        else:
+            res = payload.result.dict() #for pydantic v1
+
+        passed = 1 if res.get("compliance_passed", False) else 0
+        score = res.get("performance_score", 0)
+        reasoning = res.get("reasoning", "")
+        transcript = res.get("transcript", "")
+
+        cloud_audio_uri = res.get("cloud_audio_uri", "")
+        llm_prompt = res.get("llm_prompt", "")
+        
+        # Parse arrays to JSON strings for SQLite
+        violations = json.dumps(res.get("violations_found", []))
+        retrieved_rules = json.dumps(res.get("retrieved_rules", []))
+        verification_notes = res.get("verification_notes", "")
+        sql_facts = res.get("sql_facts", "")
+
+        utc_now = datetime.now(timezone.utc).isoformat()
+        
+        auditor_id = 1 #defaulting the user(auditor) until logins and auth is finalized
+        cursor.execute("""
+            INSERT INTO call_logs (
+                debtor_id, agent_id, auditor_id, transcript, compliance_passed, 
+                ai_performance_score, reasoning, violations, verification_notes, 
+                retrieved_rules, sql_facts
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            payload.debtor_id, 
+            payload.agent_id, 
+            auditor_id, 
+            transcript, 
+            passed, 
+            score, 
+            reasoning,
+            violations,
+            verification_notes,
+            retrieved_rules,
+            sql_facts
+        ))
+        db.commit()
+        return SaveAuditResponse(log_id=cursor.lastrowid, message="Audit saved successfully.")
+
+    except Exception as e:
+        print(f"Database Save Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

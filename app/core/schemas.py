@@ -32,7 +32,7 @@ class AuditResult(BaseModel):
 
 class SaveAuditRequest(BaseModel):
     debtor_id:          int
-    agent_id:           Optional[int]   = None
+    agent_id:           int
     result:             AuditResult
 
 class SaveAuditResponse(BaseModel):

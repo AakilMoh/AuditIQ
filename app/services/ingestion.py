@@ -78,11 +78,16 @@ cursor.execute('''
 
         cloud_audio_uri TEXT UNIQUE,
         transcript TEXT NOT NULL,
-        llm_prompt TEXT NOT NULL,
+        llm_prompt TEXT,
 
         compliance_passed BOOLEAN NOT NULL CHECK(compliance_passed IN (0,1)),
         ai_performance_score INTEGER NOT NULL CHECK(ai_performance_score BETWEEN 1 AND 10),
         reasoning TEXT,
+
+        violations TEXT,
+        verification_notes TEXT,
+        retrieved_rules TEXT,
+        sql_facts TEXT,
 
         human_override_score INTEGER CHECK(human_override_score BETWEEN 1 AND 10),
 
@@ -111,98 +116,29 @@ cursor.executemany('INSERT OR IGNORE INTO auditors (username, password_hash, rol
 cursor.executemany('INSERT OR IGNORE INTO agents (name, department) VALUES (?, ?)', 
                    [("Agent Michael", "Collections Tier 1"), ("Agent Sarah", "Legal Escalations")])
 
-# Ingesting fake accounts
-cursor.executemany('INSERT OR IGNORE INTO debtors (account_number, name, balance, status) VALUES (?, ?, ?, ?)', [
-    ("ACC-1001", "Ali Khan", 3200.00, "Active"),
-    ("ACC-1002", "Sara Connor", 450.50, "Settlement negotiated"),
-    ("ACC-1003", "Jane Smith", 8900.00, "Pending Legal Action"),
-])
+# Ingesting existing debtor file accounts
+debtors_list = [
+    # --- THE ORIGINAL 5 (Mapped to physical audio files) ---
+    ("ACC-2001", "John Doe", 1200.00, "Active"),
+    ("ACC-2002", "Sarah Connor", 850.00, "Active"), 
+    ("ACC-2003", "Mike Ross", 450.00, "Active"),
+    ("ACC-2004", "Emily Blunt", 2200.00, "Active"),
+    ("ACC-2005", "David Rose", 900.00, "Active"),
+    
+    # --- THE NEW BATCH (Extended for UI Testing) ---
+    ("ACC-2006", "Arthur Shelby", 1450.00, "Pending Legal Action"),
+    ("ACC-2007", "Harvey Specter", 12500.00, "Active"),
+    ("ACC-2008", "Walter White", 85000.00, "Active"),
+    ("ACC-2009", "Peter Parker", 300.00, "Pending Legal Action"),
+    ("ACC-2010", "Olivia Pope", 4200.00, "Pending Legal Action"),
+    ("ACC-2011", "Jon Snow", 150.00, "Settlement negotiated"),
+    ("ACC-2012", "Arya Stark", 3100.00, "Active"),
+    ("ACC-2013", "Thomas Shelby", 5000.00, "Pending Legal Action"),
+    ("ACC-2014", "Ellen Ripley", 2200.00, "Settlement negotiated"),
+    ("ACC-2015", "James Bond", 10500.00, "Active")
+]
+cursor.executemany('INSERT OR REPLACE INTO debtors (account_number, name, balance, status) VALUES (?, ?, ?, ?)', debtors_list)
 
 conn.commit()
 
-logger.info("2. Initializing ChromaDB")
-chroma_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
-collection = chroma_client.get_or_create_collection(
-    name="compliance_rules",
-    embedding_function=nvidia_ef
-)
-
-# Ingesting arbitrary legal policies
-rules = [
-    {
-        "id": "Rule1",
-        "text": "Agents are authorized to offer a 20% discount on balances over $1000.",
-        "type": "payment_policy",
-        "severity": "medium",
-        "priority": 2,
-        "category": "financial_offer",
-        "action": "allow"
-    },
-    {
-        "id": "Rule2",
-        "text": "Under FDCPA rules, agents must NOT threaten legal action on accounts marked 'Active'.",
-        "type": "legal_constraint",
-        "severity": "high",
-        "priority": 5,
-        "category": "legal_compliance",
-        "action": "deny"
-    },
-    {
-        "id": "Rule3",
-        "text": "Accounts marked 'Settlement Negotiated' must not be contacted for further payments.",
-        "type": "contact_policy",
-        "severity": "high",
-        "priority": 5,
-        "category": "communication_restriction",
-        "action": "deny"
-    },
-    {
-        "id": "Rule4",
-        "text": "Accounts marked 'Pending Legal Action' may be informed about legal review status but no immediate threats or coercion are allowed.",
-        "type": "communication_guideline",
-        "severity": "high",
-        "priority": 4,
-        "category": "legal_status_handling",
-        "action": "conditional"
-    },
-    {
-        "id": "Rule5",
-        "text": "Agents must not imply legal action unless explicitly authorized in policy.",
-        "type": "legal_authorization",
-        "severity": "high",
-        "priority": 5,
-        "category": "legal_compliance",
-        "action": "deny"
-    },
-    {
-        "id": "Rule6",
-        "text": "Agents are allowed to discuss account balances and payment options for all account statuses.",
-        "type": "communication_guideline",
-        "severity": "low",
-        "priority": 1,
-        "category": "general_information",
-        "action": "allow"
-    }
-]
-
-def build_metadata(rule):
-    return{
-        "type": rule.get("type"),
-        "severity": rule.get("severity"),
-        "priority": rule.get("priority"),
-        "category": rule.get("category"),
-        "action": rule.get("action")
-    }
-
-try:
-    collection.delete(ids=[r["id"] for r in rules])
-except Exception:
-    pass
-
-collection.add(
-    documents=[r["text"] for r in rules],
-    ids=[r["id"] for r in rules],
-    metadatas=[build_metadata(r) for r in rules]
-)
-
-logger.info("\nSuccess! Both databases are built and saved in the /data folder.")
+logger.info("\nSuccess! SQLite database is built and seeded.")
