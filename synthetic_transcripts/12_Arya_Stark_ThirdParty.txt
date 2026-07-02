@@ -1,0 +1,18 @@
+Agent: Hello, this is Sarah calling from Apex Collections. Am I speaking with Arya Stark?
+Sansa: Um, no, this is her sister, Sansa. Arya's not available right now. Can I ask who's calling?
+Agent: Hi Sansa, this is Sarah from Apex Collections. I'm calling about a personal financial matter for Arya. She has an outstanding debt of $3100 with us, and we're trying to get it resolved. Is there any way you could help her out with that payment?
+Sansa: I'm sorry, what? You're telling me she owes money? Like, how much?
+Agent: Yes, it's $3100. It's, uh, from a past-due account that's been delinquent for a while now. Since you're family, I was hoping maybe you could make a payment on her behalf to avoid any further action. We can set up a plan right now.
+Sansa: Wait, wait, hold on. You're just—you're telling me her debt amount? Is that even allowed? I don't think you should be discussing her finances with me.
+Agent: Well, I mean, you're her sister, right? I'm sure you want to help her out. It's a pretty serious situation. If she doesn't pay, it could go to legal, and we'd hate to see that happen. So, can you help with the $3100?
+Sansa: I—no, I can't just pay that. And I really don't think you should be giving me all these details. This feels wrong. Arya's an adult; you need to talk to her.
+Agent: I understand your concern, Sansa, but time is kind of running out. The balance is $3100, and if we don't get at least a partial payment, we have to escalate. Even a small amount today from you would stop that process. Can you do, like, $500?
+Sansa: I'm not paying anything! You're not listening. You just told me her exact debt, you're asking me to pay it—isn't that illegal or something? You can't just call up family members and spill someone's private business.
+Agent: Look, I'm just trying to resolve this account. It's a legitimate debt. Arya owes $3100. If you can't pay, do you know when she'll be back? Maybe you can pass along a message that she needs to call us immediately about this $3100 balance.
+Sansa: Oh my god, you just said the amount again! Stop telling me the number! I'm not her financial advisor. You need to speak to her directly. I'm not getting in the middle of this.
+Agent: I apologize if I upset you, but I'm required to inform the—I mean, to try to reach a resolution. Since you're a relative, I assumed you'd want to be informed. The debt is $3100. If you could just let her know that Apex Collections called about the $3100 she owes, that would be helpful.
+Sansa: You're still doing it! You've told me the amount like four times now. I'm hanging up. This is completely inappropriate. Do not call here again about Arya's debts.
+Agent: Ma'am, please, I just need to confirm—is there another number for Arya? Or can you have her call us back at 800-555-0199 regarding the $3100 balance? It's really urgent.
+Sansa: No! I'm not your messenger service. And stop saying the amount! I'm ending this call. Goodbye.
+Agent: But Sansa, the $3100—
+Sansa: *click*

@@ -1,0 +1,67 @@
+Agent: Hello, this is Michael calling, is this Jon Snow?
+
+Debtor: Uh, yeah, speaking. Who's this again?
+
+Agent: Michael. I'm calling about an account we have here. How are you doing today?
+
+Debtor: I'm alright, I guess. What account? I don't remember anything.
+
+Agent: It's a, uh, a personal account that's been open for a little while. It's showing a balance of $150.
+
+Debtor: A hundred and fifty? For what? I don't... I mean, I don't think I owe anything.
+
+Agent: I can see it right here on my screen, Jon. It's from a while back. Maybe it slipped your mind.
+
+Debtor: I really don't remember. Can you tell me what it's for? Like, what company?
+
+Agent: It's from a previous creditor. The details are a bit... it's been transferred a few times. But the balance is $150. I'm sure we can work something out.
+
+Debtor: I just... I'm not saying I won't pay, but I need to know what I'm paying for. I don't want to just give my card to a stranger.
+
+Agent: No, I totally get that. It's smart to be careful. But look, it's only $150. I can set you up on a really easy plan. We can do like, $50 a month for three months. That's nothing.
+
+Debtor: Fifty a month? That's... I mean, that's doable, I guess. But I still don't know what this is from. Was it a medical bill? A credit card?
+
+Agent: I'm not seeing the original creditor here, just the balance. But honestly, for an amount this small, it's better to just clear it up. It'll stop any further action.
+
+Debtor: Further action? What kind of action?
+
+Agent: Just, you know, the usual. It could keep showing up, affect things. But if we set up a plan today, it's done. Three payments and you're clear.
+
+Debtor: I... uh... I really don't like not knowing what it's for. This feels weird.
+
+Agent: I understand, Jon. But I'm looking at your file, and I can see you've been responsible in the past. This is probably just an oversight. Let's just get it handled. $50 today, then the next two on the 15th of the next two months. How's that sound?
+
+Debtor: Today? You want a payment right now?
+
+Agent: Well, to set up the plan, we need the first payment. It secures the agreement. Then you're not getting any more calls, any letters, nothing. It's peace of mind.
+
+Debtor: I guess... I mean, I have the money. It's just... I don't know.
+
+Agent: Tell you what. Let's just do the first $50 now. If you find out later it wasn't yours, we can always review it. But this stops everything immediately. I'm trying to help you out here, Jon.
+
+Debtor: You can review it? Like, if I find out this isn't mine, I get my money back?
+
+Agent: We can definitely look into any disputes. But right now, the system shows it's valid. So, can I get a card number or a routing number to set this up?
+
+Debtor: I... uh... hold on. Let me think. Fifty dollars. And then two more. That's it? You're not gonna add a bunch of fees?
+
+Agent: No extra fees. Just the $150 total. Three payments of $50. I'm noting the account right now that we agreed to this. I just need the first payment to lock it in.
+
+Debtor: Okay. Okay, fine. I just want this to go away. I'll use my debit card. The number is... uh... 4-2... wait, let me get my wallet. It's in the other room.
+
+Agent: No rush, take your time.
+
+Debtor: [sound of footsteps, muffled] Okay, got it. It's 4-2-1-7... no, wait. 4-2-1-7-8-9-1-2-3-4-5-6-7-8. Expiration is 09/26. And the code on the back is 4-2-1.
+
+Agent: Alright, let me run that. $50, processing... and it's approved. Great. So you're all set. The next payment of $50 will be on the 15th of next month, and the final one the month after. I'll send you a confirmation letter.
+
+Debtor: A letter? To my address? Do you have my address?
+
+Agent: I have the one on file. 123 Winterfell Lane?
+
+Debtor: Yeah, that's it. Okay. So we're done? I don't have to worry about this anymore?
+
+Agent: As long as the payments go through, you're done. No more calls from us. Thanks for taking care of this, Jon. Have a good day.
+
+Debtor: Yeah, you too. Bye.

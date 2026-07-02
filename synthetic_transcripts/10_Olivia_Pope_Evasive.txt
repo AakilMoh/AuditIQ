@@ -1,0 +1,67 @@
+Agent: Good morning, this is Sarah with Apex Recovery. Am I speaking with Olivia Pope?
+
+Debtor: Uh... who's asking?
+
+Agent: My name is Sarah, I'm calling from Apex Recovery. I'm trying to reach Olivia Pope. Is that you?
+
+Debtor: I mean, maybe. What's this about?
+
+Agent: I do need to verify that I'm speaking with the correct person before I can discuss the nature of the call. Can you confirm your name for me?
+
+Debtor: Look, I don't just give out my name to random people calling me. You called me, you tell me who you're looking for and why.
+
+Agent: I understand your caution, and I appreciate that. As I mentioned, I'm trying to reach Olivia Pope regarding a personal business matter. For privacy and security, I can't share any details until I confirm I'm speaking with her. Are you Olivia?
+
+Debtor: I might be. But I'm not confirming anything until I know what this is about. People call all the time, scams and stuff, you know?
+
+Agent: Absolutely, that's a very valid concern. I can assure you this is not a scam. Apex Recovery is a legitimate agency. But the account information is protected, so I really do need to verify your identity first. Could you at least confirm if you are Olivia Pope?
+
+Debtor: Why do you need to know? Just tell me what company you said you're with again?
+
+Agent: Apex Recovery. We're a debt recovery agency. And again, I can't go into any specifics until I'm sure I'm speaking with the right party. It's for your own protection.
+
+Debtor: Debt recovery? I don't have any debts. I think you've got the wrong number.
+
+Agent: I understand. If you're not Olivia Pope, then I do apologize for the disturbance. But if you are, I'd like to discuss this matter with you. It's important.
+
+Debtor: What kind of debt? Like, credit card? Medical?
+
+Agent: I'm sorry, but I'm unable to disclose that information without first confirming your identity. Are you Olivia Pope?
+
+Debtor: I don't feel comfortable giving you my name. You could be anyone. How do I know you're legit?
+
+Agent: That's a fair point. You're welcome to look up our company, Apex Recovery. We're fully licensed and bonded. And you can call our main line if you prefer, but I would still need to verify your identity at that time. So, can you confirm if you are Olivia Pope?
+
+Debtor: Ugh, this is so frustrating. Just tell me what the amount is, or the original creditor, something.
+
+Agent: I really wish I could, but federal law and our company policy strictly prohibit me from disclosing any account details to an unverified party. It's to prevent exactly the kind of fraud you're worried about. So, one more time, are you Olivia Pope?
+
+Debtor: What if I am? What then?
+
+Agent: If you are, then once I've verified a couple of pieces of information, I can give you a full breakdown of the account, the balance, your options for resolution, everything. But I need a clear confirmation from you first.
+
+Debtor: This is... you're not getting it. I'm not saying yes or no. Just tell me what this is regarding, generally.
+
+Agent: I'm afraid I can't do that. I've explained the reason. Without a confirmed identity, this conversation can't move forward. I'm not trying to be difficult, it's for your privacy.
+
+Debtor: So you're just going to keep calling me then? Is that it?
+
+Agent: I haven't indicated that. I'm simply trying to have a conversation with Olivia Pope. If you are not her, or if you refuse to confirm, then I'll note the account accordingly and we'll end the call here. So, for the last time, can you confirm you are Olivia Pope?
+
+Debtor: Fine. I'm not confirming. I don't know you.
+
+Agent: Alright. I respect that. Since you are unwilling to verify your identity, I am unable to discuss this matter any further. I will note the account that the party contacted refused verification. I hope you have a good day.
+
+Debtor: Wait, so that's it? You're not going to tell me anything?
+
+Agent: I'm sorry, but I can't. It's for your protection. Goodbye.
+
+Debtor: But what if I call back? Then what?
+
+Agent: If you call our main line, you'll still need to go through the verification process. I'd recommend having your account number or a piece of identifying information ready if you decide to do so. Thank you for your time. Goodbye.
+
+Debtor: Wait, wait, I don't have an account number! What am I supposed to—
+
+Agent: I'm sorry, I've already explained I can't proceed without verification. I'm going to disconnect the call now. Goodbye.
+
+Debtor: No, don't you dare hang up on—

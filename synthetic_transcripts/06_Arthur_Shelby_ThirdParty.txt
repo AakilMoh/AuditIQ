@@ -1,0 +1,31 @@
+Receptionist: Good morning, Shelby Company Limited, how can I help?
+
+Agent: Yeah, hi, uh, this is Michael calling. Is Arthur Shelby available?
+
+Receptionist: He's, um, he's actually out on the floor right now. Can I take a message?
+
+Agent: Right, well, this is Michael, I'm a debt collector. This is an attempt to collect a debt, any information obtained will be used for that purpose. So, look, I really need to get a message to him.
+
+Receptionist: Okay, I can, uh, I can leave a note on his desk, I guess.
+
+Agent: No, no, it's more urgent than that. See, he owes a balance of fourteen hundred and fifty dollars. It's quite serious. Is his wife, Linda, around? Maybe you could just pass the word to her, she usually handles his, you know, his affairs.
+
+Receptionist: I'm sorry, who is this again? Linda? I don't... I don't think I should be getting involved in their personal stuff.
+
+Agent: Just tell her it's about the fourteen-fifty he owes. She'll know what it's about. It's for a, uh, a personal loan he's behind on. Just have her call me back at this number, it's a big help.
+
+Receptionist: I mean, I can try to get him a message, but I'm not sure I'm comfortable telling his wife about his debts. That's... that's not really my place, is it?
+
+Agent: Look, it's not a secret, it's just a financial matter. It's business. Just say Michael called about the fourteen-fifty balance. She'll understand. Can you do that for me?
+
+Receptionist: I... I suppose I could mention you called, but I'm not going to discuss amounts with her. That's between them. I'll just say a Michael called regarding a personal matter.
+
+Agent: No, you need to be specific. The amount is fourteen-fifty. It's crucial she knows the amount, or she won't take it seriously. She'll just ignore it. Tell her it's fourteen hundred and fifty dollars, and it's overdue.
+
+Receptionist: Sir, I really don't think I can do that. I'm just the receptionist. I can't be passing on details of someone's private finances to their spouse. That feels... wrong. I'll tell Arthur you called, that's all I can do.
+
+Agent: Fine, fine, but when his wages get garnished, don't say I didn't try to help him out. Just tell him Michael called. He'll know. And make sure he calls back today. It's urgent.
+
+Receptionist: I'll give him the message. That's all I can promise. Goodbye.
+
+Agent: Yeah, goodbye.

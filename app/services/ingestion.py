@@ -125,7 +125,7 @@ debtors_list = [
     ("ACC-2004", "Emily Blunt", 2200.00, "Active"),
     ("ACC-2005", "David Rose", 900.00, "Active"),
     
-    # --- THE NEW BATCH (Extended for UI Testing) ---
+    # --- THE NEW BATCH (Extended for Testing) ---
     ("ACC-2006", "Arthur Shelby", 1450.00, "Pending Legal Action"),
     ("ACC-2007", "Harvey Specter", 12500.00, "Active"),
     ("ACC-2008", "Walter White", 85000.00, "Active"),

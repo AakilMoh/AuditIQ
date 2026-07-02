@@ -40,7 +40,7 @@ def cluster_and_prioritize_rules(rules):
     sim_matrix = cosine_similarity(embeddings)
     
     # 2. Cluster over 0.88 Threshold
-    THRESHOLD = 0.88
+    THRESHOLD = 0.835 # I have updated after a analysis through check_threshold.py script to find the optmial value that seperates from false positives
     cluster_counter = 0
 
     for i in range(len(rules)):
@@ -189,7 +189,23 @@ def ingest_dual_index_architecture():
     # Apply Offline Clustering
     rules_data = cluster_and_prioritize_rules(rules_data)
     
-    rule_texts = [rule["explanation"] for rule in rules_data]
+    def build_embedding_text(rule: dict) -> str:
+        parts = []
+
+        parts.append(rule.get("explanation", ""))
+
+        vp = rule.get("violation_patterns", [])
+        if vp:
+            parts.append("Violation patterns: " + " | ".join(vp[:5]))
+        
+        sa = rule.get("scenario_anchors", [])
+        if sa:
+            parts.append("Real-world examples: " + " | ".join(sa[:6]))
+        
+        return " ".join(parts)
+
+    rule_texts = [build_embedding_text(rule) for rule in rules_data]
+
     rule_ids = [rule["id"] for rule in rules_data]
     rule_metadatas = []
 

@@ -806,7 +806,34 @@ const AuditScreen = ({ onResult }) => {
 
 // ─── RESULT SCREEN ────────────────────────────────────────────────────────────
 const ResultScreen = ({ result, onNewAudit }) => {
+  const [downloadingPDF, setDownloadingPDF] = useState(false);
+  
   if (!result) return null;
+
+  const handleDownloadPDF = async () => {
+    setDownloadingPDF(true);
+    try {
+      const res = await fetch('http://localhost:8000/api/v1/audit/report/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result),
+      });
+      if (!res.ok) throw new Error("PDF generation failed");
+      
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `AuditIQ_${(result.account_name || 'Report').replace(/\s/g, "_")}_${Date.now()}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to download PDF report.");
+    } finally {
+      setDownloadingPDF(false);
+    }
+  };
 
   const {
     compliance_passed, performance_score, violations_found = [],
@@ -1036,6 +1063,16 @@ const ResultScreen = ({ result, onNewAudit }) => {
         }}>
           Export JSON ↓
         </button>
+
+        <button onClick={handleDownloadPDF} disabled={downloadingPDF} style={{
+          padding: "12px 24px", borderRadius: 8,
+          border: `1px solid ${T.accent}55`, background: `${T.accent}11`,
+          color: T.text, fontSize: 13, fontWeight: 600,
+          cursor: downloadingPDF ? "wait" : "pointer",
+          transition: "all 0.2s"
+        }}>
+          {downloadingPDF ? "Generating..." : "Download PDF 📄"}
+        </button>
       </div>
     </div>
   );
@@ -1045,6 +1082,23 @@ const ResultScreen = ({ result, onNewAudit }) => {
 const HistoryScreen = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleDownloadHistoricalPDF = async (logId, accountName) => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/audit/report/${logId}`);
+      if (!res.ok) throw new Error("Failed to fetch PDF");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `AuditIQ_${(accountName || 'Report').replace(/\s/g, "_")}_Log${logId}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to download historical PDF.");
+    }
+  };
 
   useEffect(() => {
     fetch("http://localhost:8000/api/v1/logs")
@@ -1064,13 +1118,14 @@ const HistoryScreen = () => {
       </div>
 
       <div style={{ background: T.card, border: `1px solid ${T.border2}`, borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr", padding: "16px 24px",
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr 100px", padding: "16px 24px",
           borderBottom: `1px solid ${T.border2}`, fontSize: 12, fontWeight: 600, color: T.muted,
           textTransform: "uppercase", letterSpacing: "0.05em", fontFamily: "'JetBrains Mono', monospace" }}>
           <div>Account</div>
           <div>Score</div>
           <div>Status</div>
           <div style={{ textAlign: "right" }}>Timestamp</div>
+          <div></div> 
         </div>
 
         {loading ? (
@@ -1079,7 +1134,7 @@ const HistoryScreen = () => {
           <div style={{ padding: "40px", textAlign: "center", color: T.muted }}>No audits saved yet. Run an audit to see it here!</div>
         ) : (
           logs.map((log, i) => (
-            <div key={log.log_id} style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr", padding: "16px 24px",
+            <div key={log.log_id} style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.5fr 100px", padding: "16px 24px",
               borderBottom: i < logs.length - 1 ? `1px solid ${T.border}` : "none", alignItems: "center" }}>
               <div style={{ fontSize: 14, fontWeight: 500 }}>{log.account_name || `Debtor #${log.debtor_id}`}</div>
               <div>
@@ -1097,6 +1152,17 @@ const HistoryScreen = () => {
                     : new Date(log.timestamp.replace(" ", "T") + "Z");
                   return parsedDate.toLocaleString();
                 })()}
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <button onClick={() => handleDownloadHistoricalPDF(log.log_id, log.account_name)} style={{
+                  padding: "6px 12px", borderRadius: 6, border: `1px solid ${T.border2}`,
+                  background: "transparent", color: T.accent, fontSize: 11, fontWeight: 600,
+                  cursor: "pointer", transition: "all 0.2s"
+                }}
+                onMouseEnter={e => e.target.style.background = `${T.accent}11`}
+                onMouseLeave={e => e.target.style.background = "transparent"}>
+                  PDF ↓
+                </button>
               </div>
             </div>
           ))

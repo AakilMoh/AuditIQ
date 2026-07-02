@@ -1,0 +1,34 @@
+Agent: Hello, is this James Bond?
+Debtor: Uh, yeah, this is him. Who's calling?
+Agent: Mr. Bond, this is Agent Michael with Apex Recovery Solutions. I'm calling regarding a delinquent account in your name. How are you doing today?
+Debtor: I'm, uh, I'm alright, I guess. What account are you talking about?
+Agent: This is in reference to the outstanding balance on your, uh, let me pull it up here, your Velocity Credit Card. I'm showing a current balance of fifteen thousand dollars. Can we discuss getting this resolved today?
+Debtor: Wait, wait, hold on. Fifteen thousand? That... that can't be right. I thought it was like, around ten grand or something. Where's the extra five coming from?
+Agent: I understand your concern, Mr. Bond. But I'm looking at the file right now, and it's been updated. The additional amount is for legal fees that have been applied to the account.
+Debtor: Legal fees? What legal fees? I haven't heard anything about a lawyer or court or anything.
+Agent: It's standard procedure when an account reaches this stage. The creditor has referred it to their attorney, and those fees get tacked onto your balance. So, the total you're responsible for is fifteen thousand.
+Debtor: But I never got any notice about a lawyer. This is the first I'm hearing of it. I mean, I knew I was behind, but... legal fees? That just sounds, I don't know, made up.
+Agent: Sir, I assure you, it's not made up. It's all documented. Now, I'm authorized to offer you a settlement today if you can make a substantial payment. We can knock it down to, say, twelve thousand if you can pay a lump sum.
+Debtor: Twelve thousand is still more than I thought I owed. I was trying to figure out a way to pay the ten, maybe set up a payment plan, but you're telling me it's fifteen now? That's a huge jump.
+Agent: I understand it's a lot, but the fees are non-negotiable at this point. The attorney has already done the work. Look, can we just focus on what you can do today? Even a post-dated check for a portion would stop any further action.
+Debtor: Further action? You mean like, suing me? Is that what the lawyer's for?
+Agent: I'm not saying a lawsuit has been filed, but the account is with the legal department. That's why the fees are there. If we can't work something out, it could escalate. So, what can you commit to?
+Debtor: I just... I don't get it. Why wouldn't I get a letter from this lawyer? Don't they have to tell me they're involved? This whole thing feels off.
+Agent: Mr. Bond, the letters were sent. Maybe they went to an old address, I don't know. But the balance is what it is. I'm trying to help you avoid a judgement here. Can you do five hundred today as a good faith payment?
+Debtor: No, I can't just give you five hundred dollars over the phone when I don't even know if this debt is right. I need to see something in writing. Something that shows the original debt and then these so-called legal fees.
+Agent: I can request a statement, but it'll take time, and the settlement offer might not be on the table by then. The attorney is pushing for a resolution. Honestly, if you can just give me a payment method, we can stop the clock on this.
+Debtor: Stop the clock? What clock? You're not making any sense. First it's legal fees, now a clock. I feel like you're just trying to pressure me into paying something I don't actually owe.
+Agent: Sir, I'm not trying to pressure you. I'm just laying out the facts. The balance is fifteen thousand. It's valid. If you want to dispute it, you can, but in the meantime, the interest and fees keep piling up. It's in your best interest to work with me.
+Debtor: But you said the fees were already added. Are you saying there's going to be more? How high can this go?
+Agent: I can't predict the future, Mr. Bond. I'm just saying, the longer you wait, the worse it gets. That's just how it works. So, let's be smart about this. Even a small payment today shows good faith to the attorney.
+Debtor: I want the name and number of this attorney. I want to call them myself and ask about these fees.
+Agent: I... I can't give out that information directly. It's handled internally. But I can note your dispute. Though, I have to tell you, disputing it doesn't stop the collection process or the fees.
+Debtor: So you can't even tell me who the lawyer is? That's ridiculous. This is a scam. You're just making up numbers to scare me.
+Agent: Mr. Bond, I am not a scammer. I'm a professional debt collector. I'm reading off the screen. The balance is fifteen thousand. Are you refusing to pay your debt?
+Debtor: I'm not refusing to pay what I actually owe, but I'm not paying some inflated number you just pulled out of thin air. I want a validation notice. I want everything in writing. I know my rights.
+Agent: You'll get your validation notice, but like I said, it takes time. And in the meantime, the attorney could decide to move forward. It's your call. You want to risk a lawsuit over a few thousand dollars in fees?
+Debtor: It's not a few thousand, it's five thousand dollars! That's half the original debt! And you still haven't explained what legal work was done that costs five grand.
+Agent: It's standard retainer fees, filing fees, administrative costs. It all adds up. Look, I'm not the attorney, I don't set the fees. I'm just the guy trying to collect them. Are we doing this or not?
+Debtor: No, we're not doing anything. I'm not paying a dime until I see proof. And if you call me again without sending me a letter first, I'm reporting you.
+Agent: Reporting me? For what? Trying to collect a legitimate debt? Fine, Mr. Bond. I'll note your refusal to pay. Expect to hear from the attorney directly. Goodbye.
+Debtor: Yeah, you do that. Send the attorney. I'll be waiting. Goodbye.

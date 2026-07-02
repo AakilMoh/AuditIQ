@@ -1,0 +1,55 @@
+Agent: Good morning, this is Sarah calling from Apex Recovery Solutions. Is this Peter Parker I'm speaking with?
+
+Debtor: Uh, yeah, this is Peter. Who did you say you were again?
+
+Agent: My name is Sarah, calling from Apex Recovery Solutions. This is an attempt to collect a debt, and any information obtained will be used for that purpose. I do need to verify that I'm speaking with the correct Peter Parker, so may I confirm the last four digits of your social security number for verification?
+
+Debtor: Um, I'm not really comfortable giving that out. I mean, you called me, right? So you should know who I am.
+
+Agent: I completely understand your caution, Mr. Parker. I can't disclose any information without verifying your identity first, but I can tell you that this call is regarding a personal account. If you'd prefer, I can send you a written validation notice instead.
+
+Debtor: Yeah, actually, that'd be better. I don't know what this is about. I mean, I don't think I owe anything. What is this even for?
+
+Agent: I'd be happy to explain, but I do need to verify your identity before I can discuss any specifics. Since you're not comfortable with the SSN verification, I can mail you the details. Can you confirm your current mailing address for me? I have 20 Ingram Street, Apartment 4B, Forest Hills, Queens, New York, 11375.
+
+Debtor: Wait, how do you have my address? Yeah, that's it, that's my place. But seriously, what is this about? I don't remember any debts.
+
+Agent: That's the address we have on file. Since you've verbally disputed the debt, I want to let you know that under federal law, you have 30 days from receiving our written notice to dispute the validity of this debt or any portion of it. If you don't dispute it within that period, we'll assume the debt is valid. If you do dispute it in writing, we'll obtain verification and mail it to you.
+
+Debtor: Okay, so you're saying I can just, like, dispute this and you'll stop calling?
+
+Agent: Not exactly, Mr. Parker. If you dispute the debt in writing within 30 days, we will cease collection efforts until we mail you the verification. But I do want to be clear, based on what I'm seeing here, the balance on this account is $300. That's the exact amount owed.
+
+Debtor: Three hundred? For what? I seriously have no idea what you're talking about. Is this some kind of scam?
+
+Agent: I assure you, this is not a scam, Mr. Parker. I'm calling from a licensed debt collection agency. But again, since you haven't been verified, I can't go into the nature of the debt. I can tell you that the balance is exactly $300, and I'd strongly encourage you to review the written notice once you receive it. It will outline the original creditor and the breakdown.
+
+Debtor: This is just— I mean, I pay my bills. Mostly. Sometimes I'm late, but three hundred dollars? That's a lot for me right now. Can you at least tell me who the original creditor is? Like, is it a credit card? Medical?
+
+Agent: I understand your frustration, and I wish I could give you more information right now. But without verification, I'm limited in what I can discuss. The written notice will have all of that. It'll list the original creditor, the current balance of $300, and your rights under the Fair Debt Collection Practices Act.
+
+Debtor: The Fair what? I don't know any of this legal stuff. I just— you're telling me I owe money and I don't even know why. This is stressing me out.
+
+Agent: I apologize for the stress, Mr. Parker. That's not my intention. The Fair Debt Collection Practices Act is a federal law that protects consumers. It gives you the right to dispute and request verification. Since you've told me verbally that you dispute this debt, I'm noting that in your file right now. I'll make sure the written notice is sent out to your Ingram Street address today.
+
+Debtor: So you're not gonna, like, sue me or garnish my wages or whatever? My aunt would kill me if something like that happened.
+
+Agent: No, no, nothing like that. At this stage, we're simply notifying you of the debt. And because you've disputed it verbally, I'm going to cease collection efforts until we've provided you with verification. You'll receive a letter in the mail, and from there you can decide how you want to proceed. You have options.
+
+Debtor: Options like what? I mean, if I do owe this, I can't just pull three hundred bucks out of nowhere. I'm kind of between jobs right now. Freelance photography doesn't exactly pay steady, you know?
+
+Agent: I hear you. Once you've reviewed the notice and if you determine the debt is valid, we can discuss potential payment arrangements. But that's a conversation for after you've had a chance to verify everything. Right now, the most important thing is that you get that letter and understand your rights.
+
+Debtor: Okay, okay. So you're sending a letter to my apartment. And I have 30 days from when I get it to say, "Hey, prove it," right?
+
+Agent: Exactly. You have 30 days from receipt of the notice to dispute in writing. If you do, we stop collection until we mail verification. If you don't, we assume the debt is valid. But I've already noted your verbal dispute, so we're ceasing contact now regardless.
+
+Debtor: Wait, so you're not gonna call me again? Like, at all?
+
+Agent: Not until we've mailed you the verification of the debt, no. That's your right under federal law. I'll make sure this gets processed today. Is there anything else I can help clarify before I let you go?
+
+Debtor: No, I guess not. I just— I really hope this is a mistake. I don't need this right now. Life's already complicated enough.
+
+Agent: I understand, Mr. Parker. Take care, and please review that notice carefully when it arrives. Goodbye.
+
+Debtor: Yeah, bye. Thanks, I guess.
