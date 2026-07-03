@@ -56,13 +56,14 @@ def _sse(event: dict) -> str:
 async def stream_audit(
     audio_file: UploadFile = File(...),
     debtor_id:  int        = Form(...),
+    agent_id:   int        = Form(...),
     think_mode: bool       = Form(False),
     db                     = Depends(get_db_connection),
 ):
     """
     SSE streaming audit endpoint.
 
-    Accepts multipart form: audio_file + debtor_id + think_mode.
+    Accepts multipart form: audio_file + debtor_id + agent_id + think_mode.
     Streams pipeline progress and final result as Server-Sent Events.
 
     SSE event sequence:

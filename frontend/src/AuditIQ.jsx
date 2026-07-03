@@ -480,7 +480,7 @@ const AuditScreen = ({ onResult }) => {
   };
 
   const startAudit = async () => {
-    if (!file || !debtorId) return;
+    if (!file || !debtorId || !agentId) return;
     setPhase("streaming");
     setActiveStep("init");
     setStatusMsg("Validating file and payload…");
@@ -491,6 +491,7 @@ const AuditScreen = ({ onResult }) => {
     const formData = new FormData();
     formData.append("audio_file", file);
     formData.append("debtor_id", debtorId);
+    formData.append("agent_id", agentId);
     formData.append("think_mode", thinkMode ? "True" : "False");
 
     try {
@@ -566,7 +567,7 @@ const AuditScreen = ({ onResult }) => {
   const reset = () => {
     setPhase("idle"); setActiveStep(null); setStatusMsg("");
     setTranscript(""); setStreamBuf(""); setErrorMsg("");
-    setFile(null); setDebtorId(""); setThinkMode(false);
+    setFile(null); setDebtorId(""); setAgentId(""); setThinkMode(false);
   };
 
   const streaming = phase === "streaming";
@@ -695,11 +696,11 @@ const AuditScreen = ({ onResult }) => {
               </div>
 
               <button onClick={startAudit}
-                disabled={!file || !debtorId}
+                disabled={!file || !debtorId || !agentId}
                 style={{
                   padding: "13px", borderRadius: 8, border: "none",
-                  background: file && debtorId ? T.accent : T.border2,
-                  color: file && debtorId ? "#fff" : T.dim,
+                  background: file && debtorId && agentId ? T.accent : T.border2,
+                  color: file && debtorId && agentId ? "#fff" : T.dim,
                   fontSize: 14, fontWeight: 600,
                   cursor: file && debtorId ? "pointer" : "not-allowed",
                   transition: "all 0.2s",

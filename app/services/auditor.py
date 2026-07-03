@@ -32,7 +32,7 @@ from app.core.config import (
     PRIMARY_AUDITOR_MODEL,
     VERIFIER_MODEL,
 )
-from app.services.hybrid_retriever  import LegalRetriever
+from app.services.hybrid_retriever  import retriever
 from app.services.pre_detector      import pre_detector
 from app.services.speaker_segmenter import speaker_segmenter
 
@@ -58,12 +58,6 @@ if not logger.handlers:
     
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
-
-# ─────────────────────────────────────────────────────────────────────────────
-# MODULE-LEVEL RETRIEVER
-# ─────────────────────────────────────────────────────────────────────────────
-
-retriever = LegalRetriever()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # VALID RULE IDs
@@ -548,7 +542,7 @@ def run_qa_audit(transcript, account_name, think_mode=False, debug=True):
                 {"role": "user",   "content": grader_prompt},
             ],
             temperature = 0.1,
-            max_tokens  = 500,
+            max_tokens  = 1500,
             stream      = False,
         )
         raw_grade     = response_2.choices[0].message.content

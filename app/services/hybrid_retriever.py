@@ -431,3 +431,7 @@ class LegalRetriever:
         except Exception as e:
             logger.error(f"Direct rule fetch failed: {e}")
             return []
+
+#Singleton
+
+retriever = LegalRetriever()
