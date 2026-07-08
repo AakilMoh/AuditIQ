@@ -14,7 +14,7 @@
 
 ---
 
-AuditIQ is a production-grade AI compliance auditing system that ingests debt collection call recordings, transcribes them, and runs them through a multi-stage pipeline — deterministic pre-detection, hybrid legal retrieval, multi-agent LLM audit, and rubric-based prompt grading — to produce a structured compliance verdict and downloadable PDF report.
+AuditIQ is a production-ready AI compliance auditing system that ingests debt collection call recordings, transcribes them, and runs them through a multi-stage pipeline — deterministic pre-detection, hybrid legal retrieval, multi-agent LLM audit, and rubric-based prompt grading — to produce a structured compliance verdict and downloadable PDF report.
 
 Built to reduce manual QA overhead for debt collection agencies operating under the Fair Debt Collection Practices Act (FDCPA).
 
