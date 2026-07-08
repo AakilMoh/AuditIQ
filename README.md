@@ -14,7 +14,7 @@
 
 ---
 
-AuditIQ is a production-ready AI compliance auditing system that ingests debt collection call recordings, transcribes them, and runs them through a multi-stage pipeline — deterministic pre-detection, hybrid legal retrieval, multi-agent LLM audit, and rubric-based prompt grading — to produce a structured compliance verdict and downloadable PDF report.
+AuditIQ is a production-ready AI compliance auditing system that ingests debt collection call recordings, transcribes them, and runs them through a multi-stage pipeline: deterministic pre-detection, hybrid legal retrieval, multi-agent LLM audit, and rubric-based prompt grading, to produce a structured compliance verdict and downloadable PDF report.
 
 Built to reduce manual QA overhead for debt collection agencies operating under the Fair Debt Collection Practices Act (FDCPA).
 
@@ -37,11 +37,11 @@ Built to reduce manual QA overhead for debt collection agencies operating under 
 
 ## Why AuditIQ
 
-Manual QA of debt collection calls is slow, expensive, and inconsistent. A single agency may handle thousands of calls per day — each one a potential (Fair Debt Collection Practices Act) liability if the agent missteps. Traditional keyword-based tools miss nuanced violations. Generic LLMs hallucinate legal citations.
+Manual QA of debt collection calls is slow, expensive, and inconsistent. A single agency may handle thousands of calls per day, each one a potential (Fair Debt Collection Practices Act) liability if the agent missteps. Traditional keyword-based tools miss nuanced violations. Generic LLMs hallucinate legal citations.
 
 AuditIQ solves this with a layered approach:
 
-- **Deterministic pre-detection** catches obvious violations (arrest threats, profanity, third-party disclosure) before the LLM is even invoked — no hallucination risk on clear-cut cases
+- **Deterministic pre-detection** catches obvious violations (arrest threats, profanity, third-party disclosure) before the LLM is even invoked; no hallucination risk on clear-cut cases
 - **Hybrid RAG** ensures the LLM reasons against the actual federal statute, not its training data alone
 - **Speaker segmentation** ensures the debtor's threats and emotional language never pollute the agent's compliance evaluation
 - **A second LLM grades the first** on a rubric, catching reasoning errors and providing prompt improvement suggestions for continuous improvement
@@ -114,7 +114,7 @@ One of the more subtle engineering challenges: Whisper returns flat text with no
 
 - `AGENT_STRONG` patterns fire on institutional language ("our records show", "this is an attempt to collect a debt")
 - `DEBTOR_STRONG` patterns fire on reactive language ("I already paid this", "stop calling me")
-- `AGENT_THREATENING_DEBTOR` vs `DEBTOR_THREATENING_AGENT` patterns handle the critical threat-direction disambiguation — "I'll get my lawyer" scores as DEBTOR, "we will garnish your wages" scores as AGENT
+- `AGENT_THREATENING_DEBTOR` vs `DEBTOR_THREATENING_AGENT` patterns handle the critical threat-direction disambiguation: "I'll get my lawyer" scores as DEBTOR, "we will garnish your wages" scores as AGENT
 
 Only agent speech feeds the pre-detector. FDCPA regulates the collector, not the consumer.
 
@@ -348,13 +348,13 @@ The grader's `prompt_improvement_suggestion` field is logged for every run and u
 ## Design Decisions
 
 **Why two LLMs instead of one?**
-The primary auditor (Llama 70B) is optimized for depth of reasoning and structured JSON output. Using it for self-evaluation creates a confirmation bias loop — it tends to defend its own reasoning. A separate grader model (DeepSeek V4 Pro) with an explicit rubric catches coverage gaps, miscalibrated scores, and hallucinated citations that the auditor would never self-report.
+The primary auditor (Llama 70B) is optimized for depth of reasoning and structured JSON output. Using it for self-evaluation creates a confirmation bias loop, it tends to defend its own reasoning. A separate grader model (DeepSeek V4 Pro) with an explicit rubric catches coverage gaps, miscalibrated scores, and hallucinated citations that the auditor would never self-report.
 
 **Why a pre-detection layer before the LLM?**
-Three reasons. First, LLMs are probabilistic — a regex that matches "I will have you arrested" is 100% accurate, an LLM evaluating the same phrase might be 97% accurate. For federal compliance, 3% error rate on clear-cut violations is unacceptable. Second, pre-detected violations are force-merged into the violation ID list and their corresponding law is directly fetched — the LLM cannot miss them due to retrieval ranking. Third, the pre-detector provides ground truth that the grader uses to evaluate LLM coverage.
+Three reasons. First, LLMs are probabilistic — a regex that matches "I will have you arrested" is 100% accurate, an LLM evaluating the same phrase might be 97% accurate. For federal compliance, 3% error rate on clear-cut violations is unacceptable. Second, pre-detected violations are force-merged into the violation ID list and their corresponding law is directly fetched, the LLM cannot miss them due to retrieval ranking. Third, the pre-detector provides ground truth that the grader uses to evaluate LLM coverage.
 
 **Why speaker segmentation before pre-detection?**
-FDCPA regulates the collector, not the consumer. A debtor saying "I'll sue you" or "stop calling me, this is harassment" would — without segmentation — fire pre-detector patterns for legal threats and harassment. This would pollute the audit with debtor speech. The segmenter runs first so the pre-detector only ever sees agent turns.
+FDCPA regulates the collector, not the consumer. A debtor saying "I'll sue you" or "stop calling me, this is harassment" would without segmentation fire pre-detector patterns for legal threats and harassment. This would pollute the audit with debtor speech. The segmenter runs first so the pre-detector only ever sees agent turns.
 
 **Why hybrid retrieval over pure semantic search?**
 Dense embeddings capture semantic similarity well ("stop calling me" ≈ "cease communication") but struggle with legal terminology gaps and exact section references. BM25 catches exact legal terms ("§ 806", "debt collector") that embeddings dilute. The cross-encoder reranker resolves disagreements between the two. The combination yields meaningfully higher recall than either alone on legal compliance content.
@@ -381,7 +381,7 @@ This is a deliberate prototype-stage choice. The system runs on a single QA work
 
 Built by **Aakil** — AI Engineer with a background in BI/data intelligence.
 
-This project was built to demonstrate production-grade RAG pipeline design, multi-agent LLM orchestration, and applied NLP for legal compliance — combining ML engineering depth with domain-specific prompt craft.
+This project was built to demonstrate production-ready RAG pipeline design, multi-agent LLM orchestration, and applied NLP for legal compliance that combines ML engineering depth with domain-specific prompt craft.
 
 ---
 
