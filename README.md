@@ -59,15 +59,15 @@ AuditIQ solves this with a layered approach:
 ┌────────────────────────▼────────────────────────────────────────┐
 │                   FastAPI Backend                               │
 │                                                                 │
-│  ┌─ /audit/stream ──────────────────────────────────────────┐  │
+│  ┌─ /audit/stream  ──────────────────────────────────────────┐  │
 │  │                                                           │  │
 │  │  Audio Upload → Whisper STT → Speaker Segmenter           │  │
 │  │       ↓                                                   │  │
 │  │  Pre-Detector (regex, Python) — AGENT text only           │  │
 │  │       ↓                                                   │  │
 │  │  Hybrid Retriever (Dense + BM25 + Cross-Encoder)          │  │
-│  │       ↓              + Direct fetch for pre-detected rules │  │
-│  │  Agent 1 — Primary Auditor LLM (Llama 3.1 70B, streamed) │  │
+│  │       ↓             + Direct fetch for pre-detected rules │  │
+│  │  Agent 1 — Primary Auditor LLM (Llama 3.1 70B, streamed)  │  │
 │  │       ↓                                                   │  │
 │  │  Violation ID Normalizer                                  │  │
 │  │       ↓                                                   │  │
@@ -76,7 +76,7 @@ AuditIQ solves this with a layered approach:
 │  │  Final Result → SSE complete event                        │  │
 │  └───────────────────────────────────────────────────────────┘  │
 │                                                                 │
-│  ┌─ Data Layer ─────────────────────────────────────────────┐  │
+│  ┌─ Data Layer  ─────────────────────────────────────────────┐  │
 │  │  SQLite (debtors, agents, call_logs)                      │  │
 │  │  ChromaDB Collection A — raw FDCPA statute text           │  │
 │  │  ChromaDB Collection B — enriched compliance rules        │  │
@@ -85,9 +85,9 @@ AuditIQ solves this with a layered approach:
                          │
 ┌────────────────────────▼────────────────────────────────────────┐
 │                  External Services                              │
-│  NVIDIA NIM (Llama 70B · DeepSeek V4 Pro · nv-embed-v1)        │
+│  NVIDIA NIM (Llama 70B · DeepSeek V4 Pro · nv-embed-v1)         │
 │  Groq Cloud (Whisper Large v3)                                  │
-│  Local (MiniLM-L-6-v2 cross-encoder reranker)                  │
+│  Local (MiniLM-L-6-v2 cross-encoder reranker)                   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
